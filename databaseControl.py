@@ -3,6 +3,7 @@ import traceback
 import pymysql
 import os
 from sqlUtils import *
+from queryFunction import *
 
 def begin():
     os.system('cls')
@@ -161,10 +162,41 @@ def gai(db):
     cursor.close()
     return
 
-def cha():
+def cha(db):
     os.system('cls')
-    print('查询操作维护中')
-    time.sleep(1)
+    txt = '''
+    -------------------------------------\n
+    请选择您要进行的查询操作：
+    1.查询某疾病相关数据
+    2.查询某疾病患者的遗传病史
+    3.查询某疾病患者所患的其他疾病
+    4.查询某机构调用过的疾病信息
+    5.查询某疾病信息被修改的过程
+    6.待添加
+    7.退出
+    -------------------------------------\n
+    请输入您要选择的选项：\n    
+    '''
+    choice = -1
+    print(txt)
+    while choice != 7:
+        choice = eval(input())
+        if choice == 1:
+            query1(db)
+        elif choice == 2:
+            query2(db)
+        elif choice == 3:
+            query3(db)
+        elif choice == 4:
+           query4(db)
+        elif choice == 5:
+           query5(db)
+        elif choice == 6:
+           query6(db)
+        elif choice == 7:
+           return
+        else:
+            print("请键入1-7内的数字！")
     return
         
 if __name__ == '__main__':
