@@ -71,7 +71,7 @@ def mainloop(db):
 def zeng(db):
     '''
     基本功能实现了
-    还有需要补充的功能：程序自动补充id避免id重复
+    还有需要补充的功能：程序自动补充id避免id重复，在增添新项后按照id对各项进行排序
     '''  
     os.system('cls')
     tableName = showTables(db,'修改')
@@ -111,7 +111,7 @@ def zeng(db):
 def shan(db):
     '''
     基本功能实现了
-    还有需要补充的功能：当表空时提示表空，删除时确认id是否在其中
+    还有需要补充的功能：当表空时提示表空，删除时确认id是否在其中，在删除新项后对各项进行排序
     '''                                               
     os.system('cls')
     tableName = showTables(db,'修改')
