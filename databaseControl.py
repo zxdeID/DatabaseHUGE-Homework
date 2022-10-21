@@ -103,9 +103,9 @@ def zeng(db):
         print('您成功对{}进行了修改'.format(tableName))
         time.sleep(3)
     except:
-        print('修改失败！')
+        print('修改失败！10秒钟后退出！')
         traceback.print_exc()
-        time.sleep(3)
+        time.sleep(10)
     cursor.close()
     return
 
