@@ -164,23 +164,23 @@ def gai(db):
     return
 
 def cha(db):
-    os.system('cls')
     txt = '''
     -------------------------------------\n
     请选择您要进行的查询操作：
     1.给定疾病名称，查询疾病数据贡献来源的人所患有的所有疾病
-    2.维护中
+    2.给定疾病名称，查询疾病来源地
     3.维护中
     4.维护中
     5.维护中
     6.待添加
-    7.退出
+    7.f返回上一级菜单
     -------------------------------------\n
     请输入您要选择的选项：\n    
     '''
     choice = -1
-    print(txt)
     while choice != 7:
+        os.system('cls')
+        print(txt)
         choice = eval(input())
         if choice == 1:
             query1(db)
@@ -198,6 +198,7 @@ def cha(db):
            return
         else:
             print("请键入1-7内的数字！")
+            time.sleep(3)
     return
         
 if __name__ == '__main__':
