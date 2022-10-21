@@ -6,9 +6,9 @@ from sqlUtils import *
 from queryFunction import *
 
 def begin():
-    os.system('cls')
     state = 0
     while state == 0:
+        os.system('cls')
         usrname = input('请输入用户名:\n')
         passwd = input('请输入密码:\n')
         db,state = login(usrname,passwd)
@@ -31,6 +31,7 @@ def login(usrname,passwd):
         return db,state
     except:
         print('连接失败！')
+        time.sleep(3)
         return -1,state
 
 def mainloop(db):
@@ -51,7 +52,7 @@ def mainloop(db):
         print(tips)
         choice  = eval(input('请选择:\n'))
         if choice == 1:
-            cha()
+            cha(db)
 
         elif choice == 2:
             zeng(db)
@@ -167,11 +168,11 @@ def cha(db):
     txt = '''
     -------------------------------------\n
     请选择您要进行的查询操作：
-    1.查询某疾病相关数据
-    2.查询某疾病患者的遗传病史
-    3.查询某疾病患者所患的其他疾病
-    4.查询某机构调用过的疾病信息
-    5.查询某疾病信息被修改的过程
+    1.给定疾病名称，查询疾病数据贡献来源的人所患有的所有疾病
+    2.维护中
+    3.维护中
+    4.维护中
+    5.维护中
     6.待添加
     7.退出
     -------------------------------------\n
