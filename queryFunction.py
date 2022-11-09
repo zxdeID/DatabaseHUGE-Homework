@@ -1,6 +1,9 @@
 import os
 import pymysql
 import time
+from sqlUtils import *
+import traceback
+
 
 def query1(db):
     '''
@@ -103,13 +106,47 @@ def query4(db):
     a = input('输入任意键回车返回上一级菜单')
     return
 
-
 def query5(db):
-    pass
+    '''
+    给定年龄或职业 查找患者患有的疾病有哪些
+    db:连接的数据库
+    '''
+    os.system('cls')
+    # tableName = showTables(db, '查询')
+    # cols = showColumns(db, tableName)
+    # showTable(db, tableName)
+
+    print("请输入要查询的职业：")
+    data_work = input()
+    print("请输入要查询的年龄：")
+    data_age = eval(input())
+
+    cursor = db.cursor()  # 获 取 游 标
+    sql = '''
+    Select diseaseGet\
+    from people disease_suffered\
+    where people.hid=disease_suffered.hid and people.age={}\
+    intersect\
+    select diseaseGet\
+    from people disease_suffered\
+    where people.hid=disease_suffered.hid and people.work='{}'\
+    '''.format(data_age,data_work)
+    print(sql)
+
+    try:
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        for a in result:
+            print(f"该条件下患者患有的疾病有:{a}\n")
+    except:
+        print('查询失败')
+        traceback.print_exc()
+        time.sleep(30)
+        # 关闭光标对象
+        cursor.close()
+    return
 
 def query6(db):
     pass
-
-
 
 

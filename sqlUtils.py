@@ -3,6 +3,8 @@ from unittest import result
 import pymysql
 import os
 import time
+import traceback
+
 
 def showColumns(db,tableName):
     '''
