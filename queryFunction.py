@@ -158,7 +158,6 @@ def query7(db):
     '''
         给定疾病名称，查询病人的职业
         db:连接的数据库
-        bug:sql语句有问题，会查询到重复的结果
     '''
     os.system('cls')
     dise = input("请输入疾病名称\n")
@@ -170,6 +169,7 @@ def query7(db):
     Select F.hid
     From disease_suffered F 
     Where F.diseaseGet='{}')
+    Group By P.work
     '''.format(dise)
     cursor.execute(sql)
     ret = cursor.fetchall()
@@ -194,6 +194,7 @@ def query8(db):
     Select F.hid
     From disease_suffered F 
     Where F.diseaseGet='{}')
+    Group By P.work
     '''.format(dise)
     cursor.execute(sql)
     ret = cursor.fetchall()
