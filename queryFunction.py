@@ -108,31 +108,29 @@ def query4(db):
 
 def query5(db):
     '''
-    给定年龄或职业 查找患者患有的疾病有哪些
+    给定年龄和职业 查找患者患有的疾病有哪些
     db:连接的数据库
-    bug还有很多还没弄好
     '''
-    # os.system('cls')
-    # data_work = input("请输入要查询的职业：\n")
-    # data_age = eval(input("请输入要查询的年龄：\n"))
+    os.system('cls')
+    data_work = input("请输入要查询的职业：\n")
+    data_age = eval(input("请输入要查询的年龄：\n"))
 
-    # cursor = db.cursor()  # 获 取 游 标
-    # sql = '''
-    # select DS.diseaseGet\
-    # from people P, disease_suffered DS\
-    # where P.hid=DS.hid and P.age='{}'\
-    # intersect\
-    # select DS.diseaseGet\
-    # from people P, disease_suffered DS\
-    # where P.hid=DS.hid and P.work='{}'\
-    # '''.format(data_age,data_work)
-    # '''print(sql)'''
-    # cursor.execute(sql)
-    # ret = cursor.fetchall()
-    # os.system('cls')
-    # print("该条件下患者患有的疾病有:")
-    # for a in ret:
-    #     print(a)
+    cursor = db.cursor()  # 获 取 游 标
+    sql = '''
+    select DS.diseaseGet 
+    from disease_suffered DS 
+    where DS.hid in (select P.hid 
+        from people P 
+        where P.age={} or P.work='{}')
+    '''.format(data_age , data_work)
+    '''print(sql)'''
+    cursor.execute(sql)
+    ret = cursor.fetchall()
+    os.system('cls')
+    print("该条件下患者患有的疾病有:")
+    for a in ret:
+        print(a[0])
+    a = input('输入任意键回车返回上一级菜单')
     return
 
 def query6(db):
