@@ -110,6 +110,7 @@ def query5(db):
     '''
     给定年龄和职业 查找患者患有的疾病有哪些
     db:连接的数据库
+    空结果应该有点提示
     '''
     os.system('cls')
     data_work = input("请输入要查询的职业：\n")
