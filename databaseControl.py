@@ -79,27 +79,29 @@ def zeng(db):
     tableName = showTables(db,'修改')
     os.system('cls')
     columnName = showColumns(db,tableName)
-    print(columnName)
+    # print(columnName)
     nums = len(columnName)  
-    for q in columnName:
+    for q in columnName[1:]:
         print(q[0],end='\t\t')
-    newData = input("\n表内有{}列数据，请您输入{}项，各项之间用空格分隔\n".format(nums,nums))
+    newData = input("\n表内有{}列数据，请您输入{}项，各项之间用空格分隔\n".format(nums-1,nums-1))
     dataLs = newData.split(' ')
     datas = ''
     columns = ''
     for id,col in enumerate(columnName):
+        if id == 0:
+            continue
         columns += col[0]
         columns += ','
         if col[1] == 'int(11)' or col[1] == 'int(11) unsigned':
-            datas += dataLs[id]
+            datas += dataLs[id-1]
             datas += ','
         elif col[1] == 'text' or col[1] == 'date' or col[1] == 'datetime':
-            datas += "'{}'".format(dataLs[id])
+            datas += "'{}'".format(dataLs[id-1])
             datas += ','
     
     cursor = db.cursor()
     try:
-        sql = '''insert into {} ({}) values ({})'''.format(tableName,columns[3:-1],datas[2:-1])
+        sql = '''insert into {} ({}) values ({})'''.format(tableName,columns[:-1],datas[:-1])
         cursor.execute(sql)
         db.commit()     
         print('您成功对{}进行了修改'.format(tableName))
@@ -119,9 +121,9 @@ def shan(db):
     '''                                               
     os.system('cls')
     tableName = showTables(db,'修改')
-    showTable(db,tableName)
+    dic = showTable(db,tableName)
     key = input('请输入您要删除的行所含有的id:\n')
-    sql = 'delete from {} where id = {}'.format(tableName,key)
+    sql = 'delete from {} where id = {}'.format(tableName,dic(eval(key)))
     cursor = db.cursor()
     try:
         cursor.execute(sql)
@@ -143,14 +145,14 @@ def gai(db):
     os.system('cls')
     tableName = showTables(db,'修改')
     cols = showColumns(db,tableName)
-    showTable(db,tableName)
+    dic = showTable(db,tableName)
     chng = input('请输入您要修改的数据的行号和列号,以空格分隔:\n').split(' ')
     newdt = input('请输入修改后的新内容:\n')
     if cols[eval(chng[1])-1] == 'int(11)':
         pass
     else:
         newdt = "'"+newdt+"'"
-    sql = 'update {} set {}={} where id={}'.format(tableName,cols[eval(chng[1])-1][0],newdt,chng[0])
+    sql = 'update {} set {}={} where id={}'.format(tableName,cols[eval(chng[1])-1][0],newdt,dic[eval(chng[0])])
     cursor = db.cursor()
 
     try:

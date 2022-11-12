@@ -44,7 +44,8 @@ def showTables(db,op):
 
 def showTable(db,tableName):
     '''
-    打印表内内内容
+    打印表内内内容,并返回一个id的映射字典用于进行修改操作。
+    映射字典像这样：{1:3,2:4,3:5},意味着打印内容中id等于1对应表内id等于3的行，以此类推。
     db:连接的数据库
     tableName:要打印的表的名称
     在此修改即可，使建立一个id的映射用于修改列号
@@ -58,9 +59,12 @@ def showTable(db,tableName):
     for j in columnName:
         print(j[0],end='\t\t')
     print('')
-    for i in values:
-        for k in i:
+    dic = {}
+    for z,i in enumerate(values):
+        print('{}'.format(z+1),end = '\t\t')
+        dic[z+1] = i[0]
+        for k in i[1:]:
             print('{}'.format(k),end='\t\t')
         print('')
     print("{:-^50}".format(''))
-    return
+    return dic
