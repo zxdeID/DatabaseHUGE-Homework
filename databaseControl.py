@@ -79,7 +79,6 @@ def zeng(db):
     tableName = showTables(db,'修改')
     os.system('cls')
     columnName = showColumns(db,tableName)
-    # print(columnName)
     nums = len(columnName)  
     for q in columnName[1:]:
         print(q[0],end='\t\t')
@@ -117,13 +116,26 @@ def zeng(db):
 def shan(db):
     '''
     基本功能实现了
-    还有需要补充的功能：当表空时提示表空，删除时确认id是否在其中，在删除新项后对各项进行排序
+    还有需要补充的功能：当表空时提示表空
     '''                                               
     os.system('cls')
-    tableName = showTables(db,'修改')
-    dic = showTable(db,tableName)
-    key = input('请输入您要删除的行所含有的id:\n')
-    sql = 'delete from {} where id = {}'.format(tableName,dic(eval(key)))
+    notIn = True
+    bo = False  
+    while not bo:       #当表空时
+        tableName = showTables(db,'修改')
+        dic, bo = showTable(db,tableName)
+
+    while notIn:        #当表id不对时
+        key = eval(input('请输入您要删除的行所含有的id:\n'))
+        for i in dic:
+            if i == key:
+                notIn = False
+        print("输入id有误，请重试！")
+        time.sleep(3)
+        os.system('cls')
+        dic, bo = showTable(db,tableName)
+
+    sql = 'delete from {} where id = {}'.format(tableName,dic(key))
     cursor = db.cursor()
     try:
         cursor.execute(sql)
