@@ -79,6 +79,7 @@ def zeng(db):
     tableName = showTables(db,'修改')
     os.system('cls')
     columnName = showColumns(db,tableName)
+    print(columnName)
     nums = len(columnName)  
     for q in columnName:
         print(q[0],end='\t\t')
@@ -89,24 +90,25 @@ def zeng(db):
     for id,col in enumerate(columnName):
         columns += col[0]
         columns += ','
-        if col[1] == 'int(11)':
+        if col[1] == 'int(11)' or col[1] == 'int(11) unsigned':
             datas += dataLs[id]
             datas += ','
-        elif col[1] == 'text' or col[1] == 'date':
+        elif col[1] == 'text' or col[1] == 'date' or col[1] == 'datetime':
             datas += "'{}'".format(dataLs[id])
             datas += ','
     
     cursor = db.cursor()
     try:
-        sql = '''insert into {} ({}) values ({})'''.format(tableName,columns[:-1],datas[:-1])
+        sql = '''insert into {} ({}) values ({})'''.format(tableName,columns[3:-1],datas[2:-1])
         cursor.execute(sql)
         db.commit()     
         print('您成功对{}进行了修改'.format(tableName))
         time.sleep(3)
     except:
         print('修改失败！10秒钟后退出！')
+        print(sql)
         traceback.print_exc()
-        time.sleep(10)
+        time.sleep(1000)
     cursor.close()
     return
 

@@ -47,6 +47,7 @@ def showTable(db,tableName):
     打印表内内内容
     db:连接的数据库
     tableName:要打印的表的名称
+    在此修改即可，使建立一个id的映射用于修改列号
     '''
     cursor = db.cursor()
     sql = 'select * from {}'.format(tableName)
