@@ -9,7 +9,6 @@ def query1(db):
     '''
     给定疾病名称，查询疾病数据贡献来源的人所患有的所有疾病
     db:连接的数据库
-    小bug：没有排除空结果
     '''
     os.system('cls')
     dise = input('请输入疾病名称:\n')
@@ -25,6 +24,10 @@ def query1(db):
     '''.format(dise)
     cursor.execute(sql)
     ret = cursor.fetchall()
+    if len(ret) == 0:
+        print('结果为空！')
+        time.sleep(3)
+        return
     os.system('cls')
     print('hid\t\tdisease')
     for i in ret:
@@ -36,7 +39,6 @@ def query2(db):
     '''
     给定疾病名称，查询疾病来源地
     db:连接的数据库
-    小bug：没有排除空结果
     '''
     os.system('cls')
     dise = input('请输入疾病名称:\n')
@@ -52,6 +54,10 @@ def query2(db):
     '''.format(dise)
     cursor.execute(sql)
     ret = cursor.fetchall()
+    if len(ret) == 0:
+        print('结果为空！')
+        time.sleep(3)
+        return
     os.system('cls')
     print('address')
     for i in ret:
@@ -63,7 +69,6 @@ def query3(db):
     '''
     给定疾病，查询该疾病的患病人数
     db:连接的数据库
-    小bug：也没有考虑空结果
     之前的想法要实现略有些麻烦，于是做了点改变（如果脑子还能活下来，就再试试看之前的想法）
     '''
     os.system('cls')
@@ -76,6 +81,10 @@ def query3(db):
     '''.format(dise)
     cursor.execute(sql)
     ret = cursor.fetchall()
+    if len(ret) == 0:
+        print('结果为空！')
+        time.sleep(3)
+        return
     os.system('cls')
     print('the number of patients:{}'.format(ret))
     a = input('输入任意键回车返回上一级菜单')
@@ -85,7 +94,6 @@ def query4(db):
     '''
     给定疾病，查询患有该病的患者的平均年龄
     db:连接的数据库
-    小bug:依旧没排除空结果
     '''
     os.system('cls')
     dise = input('请输入疾病名称:\n')
@@ -101,6 +109,10 @@ def query4(db):
     '''.format(dise)
     cursor.execute(sql)
     ret = cursor.fetchall()
+    if len(ret) == 0:
+        print('结果为空！')
+        time.sleep(3)
+        return
     os.system('cls')
     print('average age:{}'.format(ret))
     a = input('输入任意键回车返回上一级菜单')
@@ -110,7 +122,6 @@ def query5(db):
     '''
     给定年龄和职业 查找患者患有的疾病有哪些
     db:连接的数据库
-    空结果应该有点提示
     '''
     os.system('cls')
     data_work = input("请输入要查询的职业：\n")
@@ -127,6 +138,10 @@ def query5(db):
     '''print(sql)'''
     cursor.execute(sql)
     ret = cursor.fetchall()
+    if len(ret) == 0:
+        print('结果为空！')
+        time.sleep(3)
+        return
     os.system('cls')
     print("该条件下患者患有的疾病有:")
     for a in ret:
@@ -145,11 +160,15 @@ def query6(db):
     sql = '''select content , time  from edit_Record eR where eR.editor = '{}' '''.format(data_editor)
     cursor.execute(sql)
     ret = cursor.fetchall()
+    if len(ret) == 0:
+        print('结果为空！')
+        time.sleep(3)
+        return
     os.system('cls')
     for a in ret:
         content = a[0]
-        time = a[1]
-        print(f"修改内容为：{content}修改时间为:{time}")
+        t = a[1]
+        print(f"修改内容为：{content}修改时间为:{t}")
     a = input('输入任意键回车返回上一级菜单')
     return
 
@@ -172,6 +191,10 @@ def query7(db):
     '''.format(dise)
     cursor.execute(sql)
     ret = cursor.fetchall()
+    if len(ret) == 0:
+        print('结果为空！')
+        time.sleep(3)
+        return
     os.system('cls')
     for i in ret:
         print(i[0])
@@ -197,6 +220,10 @@ def query8(db):
     '''.format(dise)
     cursor.execute(sql)
     ret = cursor.fetchall()
+    if len(ret) == 0:
+        print('结果为空！')
+        time.sleep(3)
+        return
     os.system('cls')
     for i in ret:
         print(i[0])
