@@ -116,7 +116,6 @@ def zeng(db):
 def shan(db):
     '''
     基本功能实现了
-    还有需要补充的功能：当表空时提示表空
     '''                                               
     os.system('cls')
     notIn = True
@@ -155,10 +154,28 @@ def gai(db):
     还没想到有啥bug
     '''
     os.system('cls')
-    tableName = showTables(db,'修改')
-    cols = showColumns(db,tableName)
-    dic = showTable(db,tableName)
-    chng = input('请输入您要修改的数据的行号和列号,以空格分隔:\n').split(' ')
+    # tableName = showTables(db,'修改')
+    # dic,bo = showTable(db,tableName)
+    bo = False
+    while not bo:       #当表空时
+        tableName = showTables(db,'修改')
+        dic, bo = showTable(db,tableName)
+    notOk = True
+    while   notOk:  #当列数或者行数不对时
+        cols = showColumns(db,tableName)
+        col_nums = len(cols)    #列数
+        ids = len(dic)
+        range_col = range(1,col_nums+1)
+        range_id = range(1,ids+1)
+        chng = input('请输入您要修改的数据的行号和列号,以空格分隔:\n').split(' ')
+        if eval(chng[0]) in range_id and eval(chng[1]) in range_col:
+            notOk = False
+        else:
+            print("行号或列号范围有误！3秒后返回！")
+            time.sleep(3)
+            os.system('cls')
+            dic, bo = showTable(db,tableName)
+
     newdt = input('请输入修改后的新内容:\n')
     if cols[eval(chng[1])-1] == 'int(11)':
         pass
@@ -219,7 +236,7 @@ def cha(db):
         elif choice == 9:
            return
         else:
-            print("请键入1-7内的数字！")
+            print("请键入1-9内的数字！")
             time.sleep(3)
     return
         

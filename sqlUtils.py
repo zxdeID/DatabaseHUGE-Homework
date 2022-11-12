@@ -44,7 +44,7 @@ def showTables(db,op):
 
 def showTable(db,tableName):
     '''
-    打印表内内内容,并返回一个id的映射字典用于进行修改操作。
+    打印表内内内容,并返回一个id的映射字典用于进行修改操作。当表空时返回false
     映射字典像这样：{1:3,2:4,3:5},意味着打印内容中id等于1对应表内id等于3的行，以此类推。
     db:连接的数据库
     tableName:要打印的表的名称
@@ -54,6 +54,11 @@ def showTable(db,tableName):
     sql = 'select * from {}'.format(tableName)
     cursor.execute(sql)
     values = cursor.fetchall()
+    data_nums = len(values)
+    if data_nums == 0:
+        print("该表空！3秒后返回上一页")
+        time.sleep(3)
+        return {},False
     columnName = showColumns(db,tableName)
     print("{:-^50}".format(tableName))
     for j in columnName:
@@ -67,4 +72,4 @@ def showTable(db,tableName):
             print('{}'.format(k),end='\t\t')
         print('')
     print("{:-^50}".format(''))
-    return dic
+    return dic,True
