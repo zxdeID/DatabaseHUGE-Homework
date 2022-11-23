@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>库内表列表</title>
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+    <style>
+        div {
+            text-align: center;
+            margin: auto;
+                }
+    </style>
+
+</head>
+<body>
+    <div>
+        <br>
+        <br>
+        <p>库内表如下</p>
+        <br>
+        <form action="choose" method="GET">
+            <input type="hidden" name="choice" value = "1" >
+            <input type="submit" value="disease_list" width="200px" class="layui-btn">
+        </form>
+            <br>
+            <br>
+        <form action="choose" method="GET">
+            <input type="hidden" name="choice" value = "2" >
+            <input type="submit" value="   disease_suffered   " class="layui-btn">
+        </form>
+            <br>
+            <br>
+        <form action="choose" method="GET">
+            <input type="hidden" name="choice" value = "3" >
+            <input type="submit" value="       edit_record       " class="layui-btn">
+        </form>
+            <br>
+            <br>
+        <form action="choose" method="GET">
+            <input type="hidden" name="choice" value = "4" >
+            <input type="submit" value="          people          " class="layui-btn">
+        </form>
+            <br>
+            <br>
+        <form action="choose" method="GET">
+            <input type="hidden" name="choice" value = "5" >
+            <input type="submit" value="user" class="layui-btn">
+        </form>
+            <br>
+            <br>
+    </div>
+</body>
+</html>

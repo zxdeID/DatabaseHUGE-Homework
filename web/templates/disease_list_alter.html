@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>修改</title>
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+</head>
+<body>
+
+<div class="layui-main">
+    <div class="site-content">
+        <br><br>
+        <h1 class="site-h1">修改信息</h1>
+        <br><br>
+        <form class="layui-form" action="alter" method="post">
+            <input name="id" type = "hidden" value="{{diseaseList.id}}">
+            <div class="layui-form-item">
+                <label class="layui-form-label">图像记录</label>
+                <div class="layui-input-block">
+                    <input type="number" name="ifImg" required lay-verify="required" placeholder="请输入是否有图像记录"
+                           autocomplete="off"
+                           class="layui-input" value="{{diseaseList.ifImg}}">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">数据记录</label>
+                <div class="layui-input-block">
+                    <input type="number" name="ifText" required lay-verify="required" placeholder="请输入城是否有数据记录" autocomplete="off"
+                           class="layui-input" value="{{diseaseList.ifText}}">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">上次编辑时间</label>
+                <div class="layui-input-block">
+                    <input type="number" name="lastEditTime" required lay-verify="required" placeholder="请输入上次编辑时间"
+                           autocomplete="off"
+                           class="layui-input" value="{{diseaseList.lastEditTime}}">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">入库id</label>
+                <div class="layui-input-block">
+                    <input type="number" name="hid" required lay-verify="required" placeholder="请输入入库id"
+                           autocomplete="off"
+                           class="layui-input" value="{{diseaseList.hid}}">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="../static/layui/layui.js"></script>
+<script>
+    //Demo
+    layui.use('form', function () {
+        var form = layui.form;
+    });
+</script>
+</body>
+</html>
