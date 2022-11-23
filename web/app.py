@@ -26,6 +26,25 @@ def login():
     else:
         return render_template('login.html',msg = '登录失败')
 
+'''
+从此往下的一大堆杂玩意就全是数据库部分的内容了，可在url后面加上/table_list进去查看
+'''
+#表名页
+@app.route('/table_list')
+def table_list():
+    return render_template('table_list.html')
+
+#选择展示某个表
+@app.route('/choose')
+def choose():
+    choice = request.args.get("choice")
+    if choice == "1":
+        return select_disease_list()
+    elif choice == "2":
+        return select_disease_suffered()
+    else:
+        print(f"choice = {choice},type = {type(choice)}")
+        return select_disease_list()
 
 #定义模型
 class DiseaseList(db.Model):
@@ -36,29 +55,14 @@ class DiseaseList(db.Model):
     lastEditTime = db.Column(db.Date)
     hid = db.Column(db.Integer)
 
-@app.route('/table_list')
-def table_list():
-    return render_template('table_list.html')
-
-@app.route('/choose')
-def choose():
-    choice = request.args.get("choice")
-    if choice == "1":
-        return selectAll()
-    else:
-        print(f"choice = {choice},type = {type(choice)}")
-        return selectAll()
-    # return selectAll()
-
-
 #查询所有数据
-@app.route("/select")
-def selectAll():
+@app.route("/select_disease_list")
+def select_disease_list():
     Disease_List = DiseaseList.query.order_by(DiseaseList.id.desc()).all()
     return render_template("disease_list.html",disease_list = Disease_List)
 
 #添加数据
-@app.route('/insert',methods=['GET','POST'])
+@app.route('/insert_disease_list',methods=['GET','POST'])
 def insert():
     #进行添加操作
     ifImg = request.form['ifImg']
@@ -69,26 +73,26 @@ def insert():
     db.session.add(diseaseList)
     db.session.commit()
     #添加完成重定向至主页
-    return redirect('/')
+    return redirect('/table_list')
 
-@app.route("/insert_page")
+@app.route("/insert_page_disease_list")
 def insert_page():
     #跳转至添加信息页面
     return render_template("disease_list_insert.html")
 
 
 #删除数据
-@app.route("/delete",methods=['GET'])
+@app.route("/delete_disease_list",methods=['GET'])
 def delete():
     #操作数据库得到目标数据，before_number表示删除之前的数量，after_name表示删除之后的数量
     id = request.args.get("id")
     diseaseList = DiseaseList.query.filter_by(id=id).first()
     db.session.delete(diseaseList)
     db.session.commit()
-    return redirect('/')
+    return redirect('/table_list')
 
 #修改操作
-@app.route("/alter",methods=['GET','POST'])
+@app.route("/alter_disease_list",methods=['GET','POST'])
 def alter():
     # 可以通过请求方式来改变处理该请求的具体操作
     # 比如用户访问/alter页面  如果通过GET请求则返回修改页面 如果通过POST请求则使用修改操作
@@ -104,7 +108,6 @@ def alter():
     else:
         #接收参数，修改数据
         id = request.form["id"]
-        print(f"id = {id}")
         ifImg = request.form['ifImg']
         ifText = request.form['ifText']
         lastEditTime = request.form['lastEditTime']
@@ -115,10 +118,80 @@ def alter():
         diseaseList.lastEditTime = lastEditTime
         diseaseList.hid = hid
         db.session.commit()
-        return redirect('/')
+        return redirect('/table_list')
+
+#定义模型
+class DiseaseSuffered(db.Model):
+    #表模型
+    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+    hid = db.Column(db.Integer)
+    diseaseGet = db.Column(db.String(255))
+    time = db.Column(db.Date)
+
+#查询所有数据
+@app.route("/select_disease_suffered")
+def select_disease_suffered():
+    Disease_Suffered = DiseaseSuffered.query.order_by(DiseaseSuffered.id.desc()).all()
+    return render_template("disease_suffered.html",disease_suffered = Disease_Suffered)
+
+#添加数据
+@app.route('/insert_disease_suffered',methods=['GET','POST'])
+def insert_disease_suffered():
+    #进行添加操作
+    hid = request.form['hid']
+    diseaseGet = request.form['diseaseGet']
+    time = request.form['time']
+    diseaseSuffered = DiseaseSuffered(hid=hid,diseaseGet=diseaseGet,time=time)
+    db.session.add(diseaseSuffered)
+    db.session.commit()
+    #添加完成重定向至主页
+    return redirect('/table_list')
+
+@app.route("/insert_page_disease_suffered")
+def insert_page_disease_suffered():
+    #跳转至添加信息页面
+    return render_template("disease_suffered_insert.html")
+
+
+#删除数据
+@app.route("/delete_disease_suffered",methods=['GET'])
+def delete_disease_suffered():
+    #操作数据库得到目标数据，before_number表示删除之前的数量，after_name表示删除之后的数量
+    id = request.args.get("id")
+    diseaseSuffered = DiseaseSuffered.query.filter_by(id=id).first()
+    db.session.delete(diseaseSuffered)
+    db.session.commit()
+    return redirect('/table_list')
+
+#修改操作
+@app.route("/alter_disease_suffered",methods=['GET','POST'])
+def alter_disease_suffered():
+    # 可以通过请求方式来改变处理该请求的具体操作
+    # 比如用户访问/alter页面  如果通过GET请求则返回修改页面 如果通过POST请求则使用修改操作
+    if request.method == 'GET':
+    #进行添加操作
+        id = request.args.get("id")
+        hid = request.args.get("hid")
+        diseaseGet= request.args.get("diseaseGet")
+        time = request.args.get("time")
+        diseaseSuffered = DiseaseSuffered(id=id,hid=hid,diseaseGet=diseaseGet,time=time)
+        return render_template("disease_suffered_alter.html",diseaseSuffered = diseaseSuffered)
+    else:
+        #接收参数，修改数据
+        id = request.form["id"]
+        hid = request.form['hid']
+        diseaseGet = request.form['diseaseGet']
+        time = request.form['time']
+        diseaseSuffered = DiseaseSuffered.query.filter_by(id=id).first()
+        diseaseSuffered.hid = hid
+        diseaseSuffered.diseaseGet = diseaseGet
+        diseaseSuffered.time = time
+        db.session.commit()
+        return redirect('/table_list')
+
 
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(debug = True,port=5000)
 
 
 

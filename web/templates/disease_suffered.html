@@ -8,28 +8,26 @@
 <body>
     <div align="center">
         <br>
-        <a href="insert_page_disease_list">添加信息</a>
+        <a href="insert_page_disease_suffered">添加信息</a>
         <br>
         <br>
         <table  id = 'tabledemo'lay-filter="test">
         <thead>
         <tr>
             <th lay-data="{field:'id', width:100}">编号</th>
-            <th lay-data="{field:'ifImg', width:100}">是否有图像记录</th>
-            <th lay-data="{field:'ifText', width:80, sort:true}">是否有数据记录</th>
-            <th lay-data="{field:'lastEditTime'}">上次编辑时间</th>
-            <th lay-data="{field:'hid'}">入库id</th>
+            <th lay-data="{field:'hid', width:100}">入库id</th>
+            <th lay-data="{field:'diseaseGet', width:80, sort:true}">罹患疾病</th>
+            <th lay-data="{field:'time'}">患病时间</th>
             <th lay-data="{fixed: 'right', width: 165, align:'center', toolbar: '#barDemo'}"></th>
         </tr>
         </thead>
         <tbody>
-        {% for item in disease_list %}
+        {% for item in disease_suffered %}
             <tr>
                 <td>{{item.id}}</td>
-                <td>{{item.ifImg}}</td>
-                <td>{{item.ifText}}</td>
-                <td>{{item.lastEditTime}}</td>
                 <td>{{item.hid}}</td>
+                <td>{{item.diseaseGet}}</td>
+                <td>{{item.time}}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -50,7 +48,7 @@
 //转换静态表格
         table.init('test', {
             height: 1000,
-            width: 1000//设置高度
+            width: 600//设置高度
             ,limit:100
         });
         table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
@@ -60,10 +58,10 @@
       layer.msg('查看操作');
     } else if(layEvent === 'del'){
     layer.confirm('真的删除行么', function(index){
-        location.href='/delete_disease_list?id='+data.id;
+        location.href='/delete_disease_suffered?id='+data.id;
       });
     } else if(layEvent === 'edit'){
-      location.href="/alter_disease_list?id="+data.id+"&ifImg="+data.ifImg+"&ifText="+data.ifText+"&lastEditTime="+data.lastEditTime+"&hid="+data.hid;
+      location.href='/alter_disease_suffered?id=' + data.id + "&hid=" +data.hid + "&diseaseGet=" + data.diseaseGet + "&time=" + data.time;
     }
   });
     });

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>增加</title>
+
+ <link rel="stylesheet" href="../static/layui/css/layui.css">
+</head>
+<body>
+
+<div class="layui-main">
+    <div class="site-content">
+        <br><br>
+       <h1 class="site-h1">添加信息</h1>
+<br><br>
+<form class="layui-form" action="insert_disease_suffered" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">入库id</label>
+        <div class="layui-input-block">
+            <input type="number" name="hid" required lay-verify="required" placeholder="请输入入库id" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">罹患疾病</label>
+        <div class="layui-input-block">
+            <input type="text" name="diseaseGet" required lay-verify="required" placeholder="请输入罹患疾病" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">患病时间</label>
+        <div class="layui-input-block">
+            <input type="number" name="time" required lay-verify="required" placeholder="请输入患病时间" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+    </div>
+</div>
+<script src="../static/layui/layui.js"></script>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+    });
+</script>
+</body>
+</html>
