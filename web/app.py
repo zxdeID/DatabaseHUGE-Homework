@@ -42,6 +42,8 @@ def choose():
         return select_disease_list()
     elif choice == "2":
         return select_disease_suffered()
+    elif choice == "3":
+        return select_edit_record()
     else:
         print(f"choice = {choice},type = {type(choice)}")
         return select_disease_list()
@@ -189,6 +191,74 @@ def alter_disease_suffered():
         db.session.commit()
         return redirect('/table_list')
 
+#定义模型
+class EditRecord(db.Model):
+    #表模型
+    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+    content = db.Column(db.String(255))
+    editor = db.Column(db.String(255))
+    time = db.Column(db.Date)
+
+#查询所有数据
+@app.route("/select_edit_record")
+def select_edit_record():
+    Edit_Record = EditRecord.query.order_by(EditRecord.id.desc()).all()
+    return render_template("edit_record.html",edit_record = Edit_Record)
+
+#添加数据
+@app.route('/insert_edit_record',methods=['GET','POST'])
+def insert_edit_record():
+    #进行添加操作
+    content = request.form['content']
+    editor = request.form['editor']
+    time = request.form['time']
+    editRecord = EditRecord(content=content,editor=editor,time=time)
+    db.session.add(editRecord)
+    db.session.commit()
+    #添加完成重定向至主页
+    return redirect('/table_list')
+
+@app.route("/insert_page_edit_record")
+def insert_page_edit_record():
+    #跳转至添加信息页面
+    return render_template("edit_record_insert.html")
+
+
+#删除数据
+@app.route("/delete_edit_record",methods=['GET'])
+def delete_edit_record():
+    #操作数据库得到目标数据，before_number表示删除之前的数量，after_name表示删除之后的数量
+    id = request.args.get("id")
+    editRecord = EditRecord.query.filter_by(id=id).first()
+    db.session.delete(editRecord)
+    db.session.commit()
+    return redirect('/table_list')
+
+#修改操作
+@app.route("/alter_edit_record",methods=['GET','POST'])
+def alter_edit_record():
+    # 可以通过请求方式来改变处理该请求的具体操作
+    # 比如用户访问/alter页面  如果通过GET请求则返回修改页面 如果通过POST请求则使用修改操作
+    if request.method == 'GET':
+    #进行添加操作
+        id = request.args.get("id")
+        content = request.args.get("content")
+        editor= request.args.get("editor")
+        time = request.args.get("time")
+        editRecord = EditRecord(id=id,content=content,editor=editor,time=time)
+        return render_template("edit_record_alter.html",editRecord = editRecord)
+    else:
+        #接收参数，修改数据
+        id = request.form["id"]
+        content = request.form['content']
+        editor = request.form['editor']
+        time = request.form['time']
+        editRecord = EditRecord.query.filter_by(id=id).first()
+        editRecord.content = content
+        editRecord.editor = editor
+        editRecord.time = time
+        db.session.commit()
+        return redirect('/table_list')
 
 if __name__ == '__main__':
     app.run(debug = True,port=5000)
