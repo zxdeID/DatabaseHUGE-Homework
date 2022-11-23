@@ -8,26 +8,30 @@
 <body>
     <div align="center">
         <br>
-        <a href="insert_page_edit_record">添加信息</a>
+        <a href="insert_page_people">添加信息</a>
         <br>
         <br>
         <table  id = 'tabledemo'lay-filter="test">
         <thead>
         <tr>
             <th lay-data="{field:'id', width:100, sort:true}">编号</th>
-            <th lay-data="{field:'content', width:100}">修改内容</th>
-            <th lay-data="{field:'editor', width:80}">编辑者</th>
-            <th lay-data="{field:'time'}">修改时间</th>
+            <th lay-data="{field:'hid', width:100}">入库id</th>
+            <th lay-data="{field:'address', width:80}">住址</th>
+            <th lay-data="{field:'age'}">年龄</th>
+            <th lay-data="{field:'disease_history'}">病史</th>
+            <th lay-data="{field:'work'}">职业</th>
             <th lay-data="{fixed: 'right', width: 165, align:'center', toolbar: '#barDemo'}"></th>
         </tr>
         </thead>
         <tbody>
-        {% for item in edit_record %}
+        {% for item in people %}
             <tr>
                 <td>{{item.id}}</td>
-                <td>{{item.content}}</td>
-                <td>{{item.editor}}</td>
-                <td>{{item.time}}</td>
+                <td>{{item.hid}}</td>
+                <td>{{item.address}}</td>
+                <td>{{item.age}}</td>
+                <td>{{item.disease_history}}</td>
+                <td>{{item.work}}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -48,7 +52,7 @@
 //转换静态表格
         table.init('test', {
             height: 1000,
-            width: 600//设置高度
+            width: 1000//设置高度
             ,limit:100
         });
         table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
@@ -58,10 +62,10 @@
       layer.msg('查看操作');
     } else if(layEvent === 'del'){
     layer.confirm('真的删除行么', function(index){
-        location.href='/delete_edit_record?id='+data.id;
+        location.href='/delete_people?id='+data.id;
       });
     } else if(layEvent === 'edit'){
-      location.href='/alter_edit_record?id=' + data.id + "&content=" +data.content + "&editor=" + data.editor + "&time=" + data.time;
+      location.href='/alter_people?id=' + data.id + "&hid=" +data.hid + "&address=" + data.address + "&age=" + data.age +"&disease_history=" + data.disease_history + "&work=" + data.work;
     }
   });
     });

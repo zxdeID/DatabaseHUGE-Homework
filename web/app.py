@@ -44,6 +44,8 @@ def choose():
         return select_disease_suffered()
     elif choice == "3":
         return select_edit_record()
+    elif choice == "4":
+        return select_people()
     else:
         print(f"choice = {choice},type = {type(choice)}")
         return select_disease_list()
@@ -257,6 +259,86 @@ def alter_edit_record():
         editRecord.content = content
         editRecord.editor = editor
         editRecord.time = time
+        db.session.commit()
+        return redirect('/table_list')
+
+#定义模型
+class People(db.Model):
+    #表模型
+    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+    hid = db.Column(db.Integer)
+    age = db.Column(db.Integer)
+    address = db.Column(db.String(255))
+    disease_history = db.Column(db.String(255))
+    work = db.Column(db.String(255))
+
+#查询所有数据
+@app.route("/select_people")
+def select_people():
+    ppeople = People.query.order_by(People.id.desc()).all()
+    return render_template("people.html",people = ppeople)
+
+#添加数据
+@app.route('/insert_people',methods=['GET','POST'])
+def insert_people():
+    #进行添加操作
+    hid = request.form['hid']
+    address = request.form['address']
+    age = request.form['age']
+    disease_history = request.form['disease_history']
+    work = request.form['work']
+
+    ppeople = People(hid=hid,address=address,age=age,disease_history=disease_history,work=work)
+    db.session.add(ppeople)
+    db.session.commit()
+    #添加完成重定向至主页
+    return redirect('/table_list')
+
+@app.route("/insert_page_people")
+def insert_page_people():
+    #跳转至添加信息页面
+    return render_template("people_insert.html")
+
+
+#删除数据
+@app.route("/delete_people",methods=['GET'])
+def delete_people():
+    #操作数据库得到目标数据，before_number表示删除之前的数量，after_name表示删除之后的数量
+    id = request.args.get("id")
+    ppeople = People.query.filter_by(id=id).first()
+    db.session.delete(ppeople)
+    db.session.commit()
+    return redirect('/table_list')
+
+#修改操作
+@app.route("/alter_people",methods=['GET','POST'])
+def alter_people():
+    # 可以通过请求方式来改变处理该请求的具体操作
+    # 比如用户访问/alter页面  如果通过GET请求则返回修改页面 如果通过POST请求则使用修改操作
+    if request.method == 'GET':
+    #进行添加操作
+        id = request.args.get("id")
+        hid = request.args.get("hid")
+        address= request.args.get("address")
+        age = request.args.get("age")
+        disease_history = request.args.get("disease_history")
+        work = request.args.get("work")
+        ppeople = People(id = id,hid=hid,address=address,age=age,disease_history=disease_history,work=work)
+        return render_template("people_alter.html",people = ppeople)
+    else:
+        #接收参数，修改数据
+        id = request.form['id']
+        hid = request.form['hid']
+        address = request.form['address']
+        age = request.form['age']
+        disease_history = request.form['disease_history']
+        work = request.form['work']
+        ppeople = People.query.filter_by(id=id).first()
+        ppeople.hid = hid
+        ppeople.address = address
+        ppeople.age = age
+        ppeople.disease_history = disease_history
+        ppeople.work = work
         db.session.commit()
         return redirect('/table_list')
 
