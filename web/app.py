@@ -29,6 +29,7 @@ def login():
 '''
 从此往下的一大堆杂玩意就全是数据库部分的内容了，可在url后面加上/table_list进去查看
 '''
+
 #表名页
 @app.route('/table_list')
 def table_list():
@@ -411,9 +412,9 @@ def alter_user():
         db.session.commit()
         return redirect('/table_list')
 
+'''
+各表展示部分到此结束
+'''
 
 if __name__ == '__main__':
     app.run(debug = True,port=5000)
-
-
-
