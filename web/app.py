@@ -47,8 +47,7 @@ def choose():
     elif choice == "4":
         return select_people()
     else:
-        print(f"choice = {choice},type = {type(choice)}")
-        return select_disease_list()
+        return select_user()
 
 #定义模型
 class DiseaseList(db.Model):
@@ -341,6 +340,77 @@ def alter_people():
         ppeople.work = work
         db.session.commit()
         return redirect('/table_list')
+
+#定义模型
+class User(db.Model):
+    #表模型
+    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+    name = db.Column(db.String(255))
+    content = db.Column(db.String(255))
+    passwd = db.Column(db.String(255))
+  
+#查询所有数据
+@app.route("/select_user")
+def select_user():
+    user = User.query.order_by(User.id.desc()).all()
+    return render_template("user.html",user = user)
+
+#添加数据
+@app.route('/insert_user',methods=['GET','POST'])
+def insert_user():
+    #进行添加操作
+    name = request.form['name']
+    content = request.form['content']
+    passwd = request.form['passwd']
+
+    user = User(name=name,content=content,passwd=passwd)
+    db.session.add(user)
+    db.session.commit()
+    #添加完成重定向至主页
+    return redirect('/table_list')
+
+@app.route("/insert_page_user")
+def insert_page_user():
+    #跳转至添加信息页面
+    return render_template("user_insert.html")
+
+
+#删除数据
+@app.route("/delete_user",methods=['GET'])
+def delete_user():
+    #操作数据库得到目标数据，before_number表示删除之前的数量，after_name表示删除之后的数量
+    id = request.args.get("id")
+    user = User.query.filter_by(id=id).first()
+    db.session.delete(user)
+    db.session.commit()
+    return redirect('/table_list')
+
+#修改操作
+@app.route("/alter_user",methods=['GET','POST'])
+def alter_user():
+    # 可以通过请求方式来改变处理该请求的具体操作
+    # 比如用户访问/alter页面  如果通过GET请求则返回修改页面 如果通过POST请求则使用修改操作
+    if request.method == 'GET':
+    #进行添加操作
+        id = request.args.get("id")
+        name = request.args.get("name")
+        content= request.args.get("content")
+        passwd = request.args.get("passwd")
+        user = User(id=id,name=name,content=content,passwd=passwd)
+        return render_template("user_alter.html",user = user)
+    else:
+        #接收参数，修改数据
+        id = request.form['id']
+        name = request.form['name']
+        content = request.form['content']
+        passwd = request.form['passwd']
+        user = User.query.filter_by(id=id).first()
+        user.name=name
+        user.content=content
+        user.passwd = passwd
+        db.session.commit()
+        return redirect('/table_list')
+
 
 if __name__ == '__main__':
     app.run(debug = True,port=5000)
