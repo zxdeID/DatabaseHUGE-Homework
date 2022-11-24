@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>库内表列表</title>
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+    <style>
+        div {
+            text-align: center;
+            margin: auto;
+                }
+    </style>
+
+</head>
+<body>
+    <div>
+        <br>
+        <br>
+        <p>查询方式如下</p>
+        <br>
+        <form action="querychoose" method="GET">
+            <input type="hidden" name="choice" value = "1" >
+            <input type="submit" value="给定疾病名称，查询病人的职业" class="layui-btn">
+        </form>
+            <br>
+            <br>
+        <form action="querychoose" method="GET">
+            <input type="hidden" name="choice" value = "2" >
+            <input type="submit" value="查询2" class="layui-btn">
+        </form>
+            <br>
+            <br>
+        <form action="querychoose" method="GET">
+            <input type="hidden" name="choice" value = "3" >
+            <input type="submit" value="查询3" class="layui-btn">
+        </form>
+            <br>
+            <br>
+        <form action="querychoose" method="GET">
+            <input type="hidden" name="choice" value = "4" >
+            <input type="submit" value="查询4" class="layui-btn">
+        </form>
+            <br>
+            <br>
+    </div>
+</body>
+</html>

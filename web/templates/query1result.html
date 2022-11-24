@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+</head>
+
+<body>
+    <div align="center">
+        <br>
+        <br>
+        <table id='tabledemo' lay-filter="test">
+            <thead>
+                <tr>
+                    <th lay-data="{field:'id'}">工作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in result %}
+                <tr>
+                    <td>{{item}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script src="../static/layui/layui.js"></script>
+    <script>
+        layui.use('table', function () {
+            var table = layui.table;
+
+            //转换静态表格
+            table.init('test', {
+                height: 1000,
+                width: 1000 //设置高度
+                    ,
+                limit: 100
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,3 +1,4 @@
+from winreg import QueryInfoKey
 from flask import Flask,render_template,request,redirect
 from flask_sqlalchemy import SQLAlchemy
 
@@ -414,7 +415,46 @@ def alter_user():
 
 '''
 各表展示部分到此结束
+以下是查询部分代码
 '''
+
+#查询列表页
+@app.route('/query_list')
+def query_list():
+    return render_template('querylist.html')
+
+#选择展示某个表
+@app.route('/querychoose')
+def querychoose():
+    choice = request.args.get("choice")
+    if choice == "1":
+        return query1()
+    # elif choice == "2":
+    #     return query2()
+    # elif choice == "3":
+    #     return query3()
+    # elif choice == "4":
+    #     return query4()
+
+@app.route('/query1')
+def query1():
+    return render_template("query1input.html")
+
+@app.route('/query1exe',methods=['POST'])
+def query1exe():
+    dise = request.form["dise"]
+    sql = '''
+    Select P.work
+    From people P, disease_suffered D
+    Where P.hid = D.hid and D.hid in(
+    Select F.hid
+    From disease_suffered F 
+    Where F.diseaseGet='{}')
+    Group By P.work
+    '''.format(dise)
+    ret = db.session.execute(sql)
+    re = list(ret)
+    return render_template("query1result.html",result = re[0])
 
 if __name__ == '__main__':
     app.run(debug = True,port=5000)
