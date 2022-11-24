@@ -15,6 +15,14 @@
         <form class="layui-form" action="alter_disease_list" method="post">
             <input name="id" type = "hidden" value="{{diseaseList.id}}">
             <div class="layui-form-item">
+                <label class="layui-form-label">疾病名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" required lay-verify="required" placeholder="请输入疾病名称"
+                           autocomplete="off"
+                           class="layui-input" value="{{diseaseList.name}}">
+                </div>
+            </div>
+            <div class="layui-form-item">
                 <label class="layui-form-label">图像记录</label>
                 <div class="layui-input-block">
                     <input type="number" name="ifImg" required lay-verify="required" placeholder="请输入是否有图像记录"

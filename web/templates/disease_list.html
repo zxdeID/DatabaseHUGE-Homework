@@ -15,6 +15,7 @@
         <thead>
         <tr>
             <th lay-data="{field:'id', width:100}">编号</th>
+            <th lay-data="{field:'name', width:100}">疾病名称</th>
             <th lay-data="{field:'ifImg', width:100}">是否有图像记录</th>
             <th lay-data="{field:'ifText', width:80, sort:true}">是否有数据记录</th>
             <th lay-data="{field:'lastEditTime'}">上次编辑时间</th>
@@ -26,6 +27,7 @@
         {% for item in disease_list %}
             <tr>
                 <td>{{item.id}}</td>
+                <td>{{item.name}}</td>
                 <td>{{item.ifImg}}</td>
                 <td>{{item.ifText}}</td>
                 <td>{{item.lastEditTime}}</td>

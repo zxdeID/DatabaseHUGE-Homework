@@ -55,6 +55,7 @@ def choose():
 class DiseaseList(db.Model):
     #表模型
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+    name = db.Column(db.String(255))
     ifImg = db.Column(db.Integer)
     ifText = db.Column(db.Integer)
     lastEditTime = db.Column(db.Date)
@@ -70,11 +71,12 @@ def select_disease_list():
 @app.route('/insert_disease_list',methods=['GET','POST'])
 def insert():
     #进行添加操作
+    name = request.form['name']
     ifImg = request.form['ifImg']
     ifText = request.form['ifText']
     lastEditTime = request.form['lastEditTime']
     hid = request.form['hid']
-    diseaseList = DiseaseList(ifImg=ifImg,ifText=ifText,lastEditTime=lastEditTime,hid=hid)
+    diseaseList = DiseaseList(name=name,ifImg=ifImg,ifText=ifText,lastEditTime=lastEditTime,hid=hid)
     db.session.add(diseaseList)
     db.session.commit()
     #添加完成重定向至主页
@@ -104,20 +106,23 @@ def alter():
     if request.method == 'GET':
     #进行添加操作
         id = request.args.get("id")
+        name = request.args.get('name')
         ifImg = request.args.get("ifImg")
         ifText = request.args.get("ifText")
         lastEditTime = request.args.get("lastEditTime")
         hid = request.args.get("hid")
-        diseaseList = DiseaseList(id=id,ifImg=ifImg,ifText=ifText,lastEditTime=lastEditTime,hid=hid)
+        diseaseList = DiseaseList(id=id,name=name,ifImg=ifImg,ifText=ifText,lastEditTime=lastEditTime,hid=hid)
         return render_template("disease_list_alter.html",diseaseList = diseaseList)
     else:
         #接收参数，修改数据
         id = request.form["id"]
+        name = request.form['name']
         ifImg = request.form['ifImg']
         ifText = request.form['ifText']
         lastEditTime = request.form['lastEditTime']
         hid = request.form['hid']
         diseaseList = DiseaseList.query.filter_by(id=id).first()
+        diseaseList.name = name
         diseaseList.ifImg = ifImg
         diseaseList.ifText = ifText
         diseaseList.lastEditTime = lastEditTime

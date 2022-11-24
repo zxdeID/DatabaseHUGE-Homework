@@ -15,6 +15,13 @@
 <br><br>
     <form class="layui-form" action="insert_disease_list" method="post">
         <div class="layui-form-item">
+            <label class="layui-form-label">疾病名称</label>
+            <div class="layui-input-block">
+                <input type="number" name="name" required lay-verify="required" placeholder="请输入疾病名称" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label">是否有图像记录</label>
             <div class="layui-input-block">
                 <input type="number" name="ifImg" required lay-verify="required" placeholder="请输入是否有图像记录" autocomplete="off"
