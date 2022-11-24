@@ -16,13 +16,15 @@
         <table id='tabledemo' lay-filter="test">
             <thead>
                 <tr>
-                    <th lay-data="{field:'id'}">工作</th>
+                    <th lay-data="{field:'hid'}">修改内容</th>
+                    <th lay-data="{field:'diseaseGet'}">修改时间</th>
                 </tr>
             </thead>
             <tbody>
                 {% for item in result %}
                 <tr>
                     <td>{{item[0]}}</td>
+                    <td>{{item[1]}}</td>
                 </tr>
                 {% endfor %}
             </tbody>

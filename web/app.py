@@ -420,7 +420,7 @@ def alter_user():
 
 '''
 各表展示部分到此结束
-以下是查询部分代码
+以下是查询部分代码,可以在url后面加入query_list进去查看
 '''
 
 #查询列表页
@@ -434,12 +434,20 @@ def querychoose():
     choice = request.args.get("choice")
     if choice == "1":
         return query1()
-    # elif choice == "2":
-    #     return query2()
-    # elif choice == "3":
-    #     return query3()
-    # elif choice == "4":
-    #     return query4()
+    elif choice == "2":
+        return query2()
+    elif choice == "3":
+        return query3()
+    elif choice == "4":
+        return query4()
+    elif choice == "5":
+        return query5()
+    elif choice == "6":
+        return query6()
+    elif choice == "7":
+        return query7()
+    elif choice == "8":
+        return query8()
 
 @app.route('/query1')
 def query1():
@@ -447,6 +455,9 @@ def query1():
 
 @app.route('/query1exe',methods=['POST'])
 def query1exe():
+    '''
+        给定疾病名称，查询病人的职业
+    '''
     dise = request.form["dise"]
     sql = '''
     Select P.work
@@ -459,7 +470,163 @@ def query1exe():
     '''.format(dise)
     ret = db.session.execute(sql)
     re = list(ret)
-    return render_template("query1result.html",result = re[0])
+    return render_template("query1result.html",result = re)
+
+@app.route('/query2')
+def query2():
+    return render_template("query2input.html")
+
+@app.route('/query2exe',methods=['POST'])
+def query2exe():
+    '''
+    给定疾病名称，查询疾病数据贡献来源的人所患有的所有疾病
+    db:连接的数据库
+    '''
+    dise = request.form["dise"]
+    sql = '''
+    select P.hid,D.diseaseGet
+    from people P, disease_suffered D
+    where P.hid = D.hid and P.hid in
+    (select B.hid
+    from disease_list B
+    where B.name = '{}'
+    )
+    '''.format(dise)
+    ret = db.session.execute(sql)
+    re = list(ret)
+    print(re)
+    return render_template("query2result.html",result = re)
+
+@app.route('/query3')
+def query3():
+    return render_template("query3input.html")
+
+@app.route('/query3exe',methods=['POST'])
+def query3exe():
+    '''
+    给定疾病名称，查询疾病来源地
+    db:连接的数据库
+    '''
+    dise = request.form["dise"]
+    sql = '''
+    select P.address
+    from people P
+    where exists
+    (select *
+    from disease_list B
+    where B.name = '{}' and B.hid = P.hid
+    )
+    '''.format(dise)
+    ret = db.session.execute(sql)
+    re = list(ret)
+    return render_template("query3result.html",result = re)
+
+@app.route('/query4')
+def query4():
+    return render_template("query4input.html")
+
+@app.route('/query4exe',methods=['POST'])
+def query4exe():
+    '''
+    给定疾病，查询该疾病的患病人数
+    db:连接的数据库
+    '''
+    dise = request.form["dise"]
+    sql = '''
+    select COUNT(*) AS scount
+    from disease_suffered D, people P
+    where D.diseaseGet = '{}' and D.hid = P.hid
+    '''.format(dise)
+    ret = db.session.execute(sql)
+    re = list(ret)
+    return render_template("query4result.html",result = re)
+
+@app.route('/query5')
+def query5():
+    return render_template("query5input.html")
+
+@app.route('/query5exe',methods=['POST'])
+def query5exe():
+    '''
+    给定疾病，查询患有该病的患者的平均年龄
+    db:连接的数据库
+    '''
+    dise = request.form["dise"]
+    sql = '''
+    select AVG(P.age)
+    from people P
+    where exists
+    (select *
+    from disease_list DL
+    where DL.name = '{}' and DL.hid = P.hid
+    )
+    '''.format(dise)
+    ret = db.session.execute(sql)
+    re = list(ret)
+    return render_template("query5result.html",result = re)
+    
+@app.route('/query6')
+def query6():
+    return render_template("query6input.html")
+
+@app.route('/query6exe',methods=['POST'])
+def query6exe():
+    '''
+    给定年龄和职业 查找患者患有的疾病有哪些
+    db:连接的数据库
+    '''
+    data_work = request.form["data_work"]
+    data_age = request.form["data_age"]
+    sql = '''
+    select DS.diseaseGet 
+    from disease_suffered DS 
+    where DS.hid in (select P.hid 
+        from people P 
+        where P.age={} or P.work='{}')
+    '''.format(data_age , data_work)
+    ret = db.session.execute(sql)
+    re = list(ret)
+    return render_template("query6result.html",result = re)
+
+@app.route('/query7')
+def query7():
+    return render_template("query7input.html")
+
+@app.route('/query7exe',methods=['POST'])
+def query7exe():
+    '''
+        给定修改人查询修改时间和修改内容
+        db:连接的数据库
+    '''
+    data_editor = request.form["data_editor"]
+    sql = '''select content , time  from edit_Record eR where eR.editor = '{}' '''.format(data_editor)
+    ret = db.session.execute(sql)
+    re = list(ret)
+    return render_template("query7result.html",result = re)
+
+@app.route('/query8')
+def query8():
+    return render_template("query8input.html")
+
+@app.route('/query8exe',methods=['POST'])
+def query8exe():
+    '''
+        给定疾病名称，查询提供疾病资料的人的病史
+        db:连接的数据库
+    '''
+    dise = request.form["dise"]
+    sql = '''
+    Select P.disease_history
+    From people P,disease_suffered D
+    Where D.hid=P.hid and D.hid in(
+    Select F.hid
+    From disease_suffered F 
+    Where F.diseaseGet='{}')
+    Group By P.work
+    '''.format(dise)
+    ret = db.session.execute(sql)
+    re = list(ret)
+    return render_template("query8result.html",result = re)
 
 if __name__ == '__main__':
     app.run(debug = True,port=5000)
