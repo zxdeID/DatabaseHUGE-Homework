@@ -446,8 +446,8 @@ def querychoose():
         return query6()
     elif choice == "7":
         return query7()
-    elif choice == "8":
-        return query8()
+    # elif choice == "8":
+    #     return query8()
 
 @app.route('/query1')
 def query1():
@@ -604,29 +604,29 @@ def query7exe():
     re = list(ret)
     return render_template("query7result.html",result = re)
 
-@app.route('/query8')
-def query8():
-    return render_template("query8input.html")
+# @app.route('/query8')
+# def query8():
+#     return render_template("query8input.html")
 
-@app.route('/query8exe',methods=['POST'])
-def query8exe():
-    '''
-        给定疾病名称，查询提供疾病资料的人的病史
-        db:连接的数据库
-    '''
-    dise = request.form["dise"]
-    sql = '''
-    Select P.disease_history
-    From people P,disease_suffered D
-    Where D.hid=P.hid and D.hid in(
-    Select F.hid
-    From disease_suffered F 
-    Where F.diseaseGet='{}')
-    Group By P.work
-    '''.format(dise)
-    ret = db.session.execute(sql)
-    re = list(ret)
-    return render_template("query8result.html",result = re)
+# @app.route('/query8exe',methods=['POST'])
+# def query8exe():
+#     '''
+#         给定疾病名称，查询提供疾病资料的人的病史
+#         db:连接的数据库
+#     '''
+#     dise = request.form["dise"]
+#     sql = '''
+#     Select P.disease_history
+#     From people P,disease_suffered D
+#     Where D.hid=P.hid and D.hid in(
+#     Select F.hid
+#     From disease_suffered F 
+#     Where F.diseaseGet='{}')
+#     Group By P.work
+#     '''.format(dise)
+#     ret = db.session.execute(sql)
+#     re = list(ret)
+#     return render_template("query8result.html",result = re)
 
 if __name__ == '__main__':
     app.run(debug = True,port=5000)
