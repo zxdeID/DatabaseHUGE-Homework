@@ -1,32 +1,53 @@
 from winreg import QueryInfoKey
 from flask import Flask,render_template,request,redirect
 from flask_sqlalchemy import SQLAlchemy
-
+from sqlalchemy import and_
 app = Flask(__name__)
 #设置数据库连接
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:123456@127.0.0.1:3306/medic'    
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:123456@127.0.0.1:3306/medic'
 db = SQLAlchemy(app)
-
+username = ''
+content = ''
 
 @app.route('/')
 def welcome():
-    s = '我的狗勾真的很可爱耶'
+    s = 'UR图如下：'
     return render_template('welcome.html',a = s)
+
+#定义模型(为了看得方便，我把它搬上来这里了
+class User(db.Model):
+    #表模型
+    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+    name = db.Column(db.String(255))
+    content = db.Column(db.String(255))
+    passwd = db.Column(db.String(255))
 
 @app.route('/index')
 def dex():
     return render_template('login.html',msg = '请登录')
 
-@app.route('/index/login',methods=['post'])
+@app.route('/login',methods=['post'])
 def login():
+    global username
+    global content
     username = request.form.get('username')
     password = request.form.get('password')
-    #啊这里暂时是想和数据库内所存储的数据比较的，但是还没弄hhh 先这样敷衍一下吧~或许有时间还可以加一下弄一下不同用户的权限？（好乱哦好像没说明白
-    if username == 'buchangsheng' and password == 'mydogissocute':
-        return '登录成功'
-    else:
-        return render_template('login.html',msg = '登录失败')
+    pw = db.session.query(User.passwd).filter(User.name == username).all()
+    #hhh这里逻辑有点怪，但还算可以实现（主要是基础知识不足+懒
 
+    content = User.query.filter_by(name=username).first().content
+    if (password in str(pw)):
+        return render_template('login_success.html')
+    else:
+        return render_template('login.html',msg = '用户名或密码错误！')
+
+@app.route('/choose_function')
+def choose_function():
+    choice_function = request.args.get("choice_function")
+    if choice_function == '1':
+        return table_list()
+    elif choice_function == '2':
+        return query_list()
 '''
 从此往下的一大堆杂玩意就全是数据库部分的内容了，可在url后面加上/table_list进去查看
 '''
@@ -38,15 +59,15 @@ def table_list():
 
 #选择展示某个表
 @app.route('/choose')
-def choose():
-    choice = request.args.get("choice")
-    if choice == "1":
+def choose_table():
+    choice_table = request.args.get("choice")
+    if choice_table == "1":
         return select_disease_list()
-    elif choice == "2":
+    elif choice_table == "2":
         return select_disease_suffered()
-    elif choice == "3":
+    elif choice_table == "3":
         return select_edit_record()
-    elif choice == "4":
+    elif choice_table == "4":
         return select_people()
     else:
         return select_user()
@@ -348,13 +369,7 @@ def alter_people():
         db.session.commit()
         return redirect('/table_list')
 
-#定义模型
-class User(db.Model):
-    #表模型
-    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
-    name = db.Column(db.String(255))
-    content = db.Column(db.String(255))
-    passwd = db.Column(db.String(255))
+
   
 #查询所有数据
 @app.route("/select_user")
@@ -598,11 +613,15 @@ def query7exe():
         给定修改人查询修改时间和修改内容
         db:连接的数据库
     '''
-    data_editor = request.form["data_editor"]
-    sql = '''select content , time  from edit_Record eR where eR.editor = '{}' '''.format(data_editor)
-    ret = db.session.execute(sql)
-    re = list(ret)
-    return render_template("query7result.html",result = re)
+    if content == 'admin':
+        data_editor = request.form["data_editor"]
+        sql = '''select content , time  from edit_Record eR where eR.editor = '{}' '''.format(data_editor)
+        ret = db.session.execute(sql)
+        re = list(ret)
+        return render_template("query7result.html",result = re)
+    else:
+        return render_template("no_permission.html",result = re)
+
 
 # @app.route('/query8')
 # def query8():
