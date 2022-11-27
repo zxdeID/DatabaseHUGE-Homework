@@ -2,14 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>登录</title>
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+    <style>
+        div {
+            text-align: center;
+            margin: auto;
+                }
+    </style>
+
 </head>
 <body>
-    <form action="/index/login" method="post">
-          账号<input type="text" name="username"><br/>
-          密码<input type="password" name="password"><br/>
-          <input type="submit" value="登录"><br/>
-          {{msg}}<br/>
-    </form>
+    <div>
+        <form action="login" method="post" style="margin: 250px">
+            <b>
+            账号<br/><input type="text" name="username"><br/><br/><br/>
+            密码<br/><input type="password" name="password"><br/><br/><br/>
+            <input type="submit" value="登录" class="layui-btn"><br/><br/>
+            {{msg}}<br/>
+            </b>
+        </form>
+    </div>
 </body>
 </html>
