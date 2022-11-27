@@ -1,3 +1,4 @@
+from tkinter import E
 from winreg import QueryInfoKey
 from flask import Flask,render_template,request,redirect
 from flask_sqlalchemy import SQLAlchemy
@@ -374,8 +375,12 @@ def alter_people():
 #查询所有数据
 @app.route("/select_user")
 def select_user():
-    user = User.query.order_by(User.id.desc()).all()
-    return render_template("user.html",user = user)
+    global content
+    if content == 'admin':
+        user = User.query.order_by(User.id.desc()).all()
+        return render_template("user.html",user = user) 
+    else:
+        return render_template('no_permission.html')
 
 #添加数据
 @app.route('/insert_user',methods=['GET','POST'])
@@ -607,20 +612,22 @@ def query6exe():
 def query7():
     return render_template("query7input.html")
 
+
 @app.route('/query7exe',methods=['POST'])
 def query7exe():
     '''
         给定修改人查询修改时间和修改内容
         db:连接的数据库
     '''
-    if content == 'admin':
-        data_editor = request.form["data_editor"]
-        sql = '''select content , time  from edit_Record eR where eR.editor = '{}' '''.format(data_editor)
-        ret = db.session.execute(sql)
-        re = list(ret)
-        return render_template("query7result.html",result = re)
-    else:
-        return render_template("no_permission.html",result = re)
+    print(content)
+
+    data_editor = request.form["data_editor"]
+    sql = '''select content , time  from edit_Record eR where eR.editor = '{}' '''.format(data_editor)
+    ret = db.session.execute(sql)
+    re = list(ret)
+    return render_template("query7result.html",result = re)
+
+
 
 
 # @app.route('/query8')
