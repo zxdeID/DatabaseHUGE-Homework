@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>业务选择</title>
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+    <style>
+        div {
+            text-align: center;
+            margin: auto;
+                }
+    </style>
+
+</head>
+<body>
+<div>
+    <br>
+    <br>
+    <p>登录成功！</p>
+    <br/>
+    <p>您可以进行以下操作</p>
+    <br>
+    <form action="choose_function" method="GET" >
+        <input type="hidden" name="choice_function" value = "1" >
+        <input type="submit" value="查看或修改所有表"  class="layui-btn layui-btn-fluid">
+    </form>
+        <br>
+        <br>
+    <form action="choose_function" method="GET">
+        <input type="hidden" name="choice_function" value = "2" >
+        <input type="submit" value="   查询指定的数据   "  class="layui-btn layui-btn-fluid">
+    </form>
+        <br>
+        <br>
+</div>
+
+</body>
+</html>
