@@ -33,7 +33,7 @@ def query1(db):
     for i in ret:
         print(i[0],'\t\t',i[1])
     a = input('输入任意键回车返回上一级菜单')
-    return
+    return                 #嵌套查询
 
 def query2(db):
     '''
@@ -63,7 +63,7 @@ def query2(db):
     for i in ret:
         print(i[0])
     a = input('输入任意键回车返回上一级菜单')
-    return
+    return         #关联嵌套查询
 
 def query3(db):
     '''
@@ -88,7 +88,7 @@ def query3(db):
     os.system('cls')
     print('the number of patients:{}'.format(ret))
     a = input('输入任意键回车返回上一级菜单')
-    return
+    return    #聚合查询
 
 def query4(db):
     '''
@@ -116,7 +116,7 @@ def query4(db):
     os.system('cls')
     print('average age:{}'.format(ret))
     a = input('输入任意键回车返回上一级菜单')
-    return
+    return       #关联嵌套查询，聚合查询
 
 def query5(db):
     '''
@@ -147,7 +147,7 @@ def query5(db):
     for a in ret:
         print(a[0])
     a = input('输入任意键回车返回上一级菜单')
-    return
+    return     #嵌套查询
 
 def query6(db):
     '''
@@ -199,7 +199,7 @@ def query7(db):
     for i in ret:
         print(i[0])
     a = input('输入任意键回车返回上一级菜单')
-    return
+    return  #嵌套查询
 
 def query8(db):
     '''
@@ -228,5 +228,5 @@ def query8(db):
     for i in ret:
         print(i[0])
     a = input('输入任意键回车返回上一级菜单')
-    return
+    return   #嵌套查询
 
